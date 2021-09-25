@@ -1,0 +1,22 @@
+
+<!doctype html>
+<html>
+  <head>
+    <style type="text/css">
+      * { font-family: Verdana, sans-serif; }
+      p { width: max-content; }
+    </style>
+  </head>
+  <body style="background: #e5e5e5;">
+    <div style="width: 100px; height: 100px; background: silver;"
+      tooltip-text="Tooltip text goes here! By default, it can stretch for 600 pixels until it wraps into the next line." tooltip-pos="after"
+    >Box</div>
+    <p>Text before, <span tooltip-text="Tooltip text">hoverable text,</span> text after.</p>
+    
+    <div style="padding:200px;">
+    <p style="margin: 100px;" tooltip-text="Tooltip should be above..." tooltip-pos="top">Above</p>
+    <p style="margin: 100px;" tooltip-text="Tooltip should be below" tooltip-pos="below">Below</p>
+    <p style="margin: 100px;" tooltip-text="Tooltip should be to the left" tooltip-pos="before">Left</p>
+    <p style="margin: 100px;" tooltip-text="Tooltip should be to the right!" tooltip-pos="right">Right</p>
+  </body>
+</html>

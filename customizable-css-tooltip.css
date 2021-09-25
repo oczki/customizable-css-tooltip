@@ -1,0 +1,142 @@
+/* Customizable CSS Tooltip - Configuration */
+:root {
+  /* Color */
+  --cct-text-color: #111;
+  --cct-background: #fff;
+  --cct-border-color: black;
+
+  /* Size */
+  --cct-max-tooltip-width: 600px;
+  --cct-arrow-size: 8px;
+  --cct-border-width: 0px;
+  --cct-corner-radius: 4px;
+  --cct-distance-from-anchor: 16px;
+  --cct-padding-vertical: 12px;
+  --cct-padding-horizontal: 16px;
+
+  /* Time */
+  --cct-reveal-delay: 0.1ms;
+  --cct-reveal-duration: 150ms;
+
+  /* Other */
+  --cct-text-weight: normal;
+  --cct-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.07);
+}
+/* End of configuration */
+
+/* Optional - Style <span> elements that have a tooltip */
+span[tooltip-text] {
+  border-bottom: 1px dashed currentColor;
+}
+
+/* Tooltip's anchor */
+[tooltip-text] {
+  --distance: calc(100% + var(--cct-distance-from-anchor, 8px));
+  --distance-arrow: calc(var(--distance) - var(--cct-arrow-size, 0px) * 0.5);
+  position: relative;
+}
+
+/* Tooltip's body and arrow */
+[tooltip-text]::before,
+[tooltip-text]::after {
+  visibility: hidden;
+  position: absolute;
+  top: var(--top, unset);
+  bottom: var(--bottom, unset);
+  left: var(--left, unset);
+  right: var(--right, unset);
+  background-color: var(--cct-background, white);
+  border-width: var(--cct-border-width, 0px);
+  border-style: solid;
+  border-color: var(--cct-border-color, transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition-property: opacity;
+  transition-delay: var(--cct-reveal-delay, 0.1ms);
+  transition-duration: var(--cct-reveal-duration, 150ms);
+  transition-timing-function: ease;
+}
+
+/* Tooltip's body */
+[tooltip-text]::before {
+  content: attr(tooltip-text);
+  width: max-content;
+  max-width: var(--cct-max-tooltip-width, 500px);
+  padding: var(--cct-padding-vertical, 8px) var(--cct-padding-horizontal, 12px);
+  color: var(--cct-text-color, black);
+  font-weight: var(--cct-text-weight, normal);
+  border-radius: var(--cct-corner-radius, 0px);
+  transform: translate(var(--transform-horizontal, -50%), var(--transform-vertical, 0));
+  box-shadow: var(--cct-shadow, unset);
+}
+
+/* Tooltip's arrow */
+[tooltip-text]::after {
+  --clip-shift: var(--cct-border-width, 1px);
+  content: '';
+  width: var(--cct-arrow-size, 12px);
+  height: var(--cct-arrow-size, 12px);
+  transform: translate(var(--transform-horizontal, -50%), var(--transform-vertical, 0)) rotate(var(--rotate, 45deg));
+  clip-path: polygon(
+    var(--clip-shift) 100%,
+    var(--clip-shift) calc(100% - var(--clip-shift)),
+    min(50%, calc(var(--clip-shift) + 1px)) max(50%, calc(100% - var(--clip-shift) - 2px)),
+    max(50%, calc(100% - var(--clip-shift) - 2px)) min(50%, calc(var(--clip-shift) + 1px)),
+    calc(100% - var(--clip-shift)) var(--clip-shift),
+    100% var(--clip-shift),
+    100% 100%);
+}
+
+[tooltip-text]:hover::before,
+[tooltip-text]:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Alignment - Top/Above (default) */
+[tooltip-text]:is(:not([tooltip-pos]), [tooltip-pos="top"], [tooltip-pos="above"]) {
+  --left: 50%;
+  --bottom: var(--distance);
+}
+
+[tooltip-text]:is(:not([tooltip-pos]), [tooltip-pos="top"], [tooltip-pos="above"])::after {
+  --bottom: var(--distance-arrow);
+}
+
+/* Alignment - Bottom/Below */
+[tooltip-text]:is([tooltip-pos="bottom"], [tooltip-pos="below"]) {
+  --left: 50%;
+  --top: var(--distance);
+  --rotate: -135deg;
+}
+
+[tooltip-text]:is([tooltip-pos="bottom"], [tooltip-pos="below"])::after {
+  --top: var(--distance-arrow);
+}
+
+/* Alignment - Left/Before */
+[tooltip-text]:is([tooltip-pos="left"], [tooltip-pos="before"]) {
+  --top: 50%;
+  --right: var(--distance);
+  --rotate: -45deg;
+  --transform-horizontal: 0;
+  --transform-vertical: -50%;
+}
+
+[tooltip-text]:is([tooltip-pos="left"], [tooltip-pos="before"])::after {
+  --right: var(--distance-arrow);
+
+}
+
+/* Alignment - Right/After */
+[tooltip-text]:is([tooltip-pos="right"], [tooltip-pos="after"]) {
+  --top: 50%;
+  --left: var(--distance);
+  --rotate: 135deg;
+  --transform-horizontal: 0;
+  --transform-vertical: -50%;
+}
+
+[tooltip-text]:is([tooltip-pos="right"], [tooltip-pos="after"])::after {
+  --left: var(--distance-arrow);
+}
